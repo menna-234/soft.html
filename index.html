@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="SOFT.CSS">
+    <title>University Admission Coordination System</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-content">
+                <div class="header-title">
+                    <div class="logo">🎓</div>
+                    <div>
+                        <h1>University Admission Coordination System</h1>
+                        <p class="subtitle">Ministry of Higher Education - Arab Republic of Egypt</p>
+                    </div>
+                </div>
+                <button class="btn-logout hidden" onclick="logout()">Logout</button>
+            </div>
+        </div>
+        <div id="alertContainer"></div>
+
+        <!-- Login -->
+        <div id="loginScreen" class="card">
+            <div style="text-align: center; margin-bottom: 30px;">
+                <div class="logo" style="margin: 0 auto 20px;">👤</div>
+                <h2 style="font-size: 28px; margin-bottom: 10px;">Welcome!</h2>
+                <p style="color: #666;">Sign in to continue</p>
+                <p style="color: #999; font-size: 12px; margin-top: 10px;">For demo: ID: 12345678901234 / Password:
+                    123456</p>
+            </div>
+
+            <div class="form-group">
+                <label>National ID</label>
+                <input type="text" id="nationalId" placeholder="Enter 14-digit National ID" maxlength="14">
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="password" placeholder="Enter password">
+            </div>
+
+            <button onclick="handleLogin()" class="btn btn-primary">Login</button>
+            <button onclick="showRegister()" class="btn btn-secondary">Don't have an account? Register</button>
+        </div>
+
+        <!-- Register -->
+        <div id="registerScreen" class="card hidden">
+            <div style="text-align: center; margin-bottom: 30px;">
+                <div class="logo" style="margin: 0 auto 20px;">📝</div>
+                <h2 style="font-size: 28px; margin-bottom: 10px;">Create New Account</h2>
+            </div>
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" id="regName" placeholder="Enter full name">
+            </div>
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="regEmail" placeholder="example@email.com">
+            </div>
+            <div class="form-group">
+                <label>Phone Number</label>
+                <input type="tel" id="regPhone" placeholder="01234567890">
+            </div>
+            <div class="form-group">
+                <label>National ID</label>
+                <input type="text" id="regNationalId" placeholder="Enter 14-digit National ID" maxlength="14">
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="regPassword" placeholder="At least 6 characters">
+            </div>
+            <button onclick="handleRegister()" class="btn btn-primary">Create Account</button>
+            <button onclick="showLogin()" class="btn btn-secondary">Already have an account? Login</button>
+        </div>
+
+        <!-- Results -->
+        <div id="resultsScreen" class="card hidden">
+            <div style="text-align: center; margin-bottom: 30px;">
+                <div style="font-size: 60px;">✅</div>
+                <h2 style="font-size: 28px; margin: 20px 0;">Hello, <span id="studentName"></span></h2>
+            </div>
+
+            <div class="info-grid">
+                <div class="info-card">
+                    <p class="info-label">Name</p>
+                    <p class="info-value" id="displayName"></p>
+                </div>
+                <div class="info-card">
+                    <p class="info-label">Email</p>
+                    <p class="info-value" id="displayEmail"></p>
+                </div>
+                <div class="info-card">
+                    <p class="info-label">Phone</p>
+                    <p class="info-value" id="displayPhone"></p>
+                </div>
+                <div class="info-card">
+                    <p class="info-label">National ID</p>
+                    <p class="info-value" id="displayNationalId"></p>
+                </div>
+            </div>
+
+            <div class="score-display">
+                <div style="font-size: 24px;">🏆</div>
+                <p style="font-size: 18px; margin: 10px 0;">Your Total Score</p>
+                <div class="score-number" id="displayScore"></div>
+                <p>out of 410</p>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="scoreProgress"></div>
+                </div>
+            </div>
+
+            <div class="alert alert-info">
+                <span style="font-size: 24px;">ℹ️</span>
+                <p>Available colleges: <strong id="availableCount"></strong></p>
+            </div>
+
+            <button onclick="showCoordination()" class="btn btn-primary">View Available Colleges</button>
+        </div>
+
+        <!-- Coordination -->
+        <div id="coordinationScreen" class="card hidden">
+            <h2 style="text-align: center; margin-bottom: 20px;">Available Colleges</h2>
+
+            <div class="alert alert-info">
+                <span style="font-size: 24px;">💡</span>
+                <p>Select up to 5 colleges in your preferred order</p>
+            </div>
+
+            <div class="college-list" id="collegeList"></div>
+
+            <button onclick="submitApplication()" class="btn btn-primary" style="margin-top: 30px;">Submit
+                Application</button>
+        </div>
+
+        <!-- Admission -->
+        <div id="admissionScreen" class="card hidden">
+            <div style="text-align: center;">
+                <div style="font-size: 80px;">🎉</div>
+                <h2 style="font-size: 32px; color: #10b981; margin: 20px 0;">Congratulations! You’re Accepted!</h2>
+
+                <div
+                    style="background: linear-gradient(135deg, #d1fae5, #a7f3d0); padding: 40px; border-radius: 20px; margin: 30px 0;">
+                    <h3 style="font-size: 32px; color: #065f46;" id="admittedCollegeName"></h3>
+                </div>
+
+                <button onclick="showDocuments()" class="btn btn-primary">Proceed to Document Submission</button>
+            </div>
+        </div>
+
+        <!-- Documents -->
+        <div id="documentsScreen" class="card hidden">
+            <h2 style="text-align: center; margin-bottom: 20px;">Document Submission</h2>
+
+            <div class="alert alert-info">
+                <span style="font-size: 24px;">📋</span>
+                <div>
+                    <p style="font-weight: bold; margin-bottom: 10px;">Required Documents:</p>
+                </div>
+            </div>
+
+            <div style="background: #f9fafb; padding: 30px; border-radius: 15px; margin: 20px 0;">
+                <div style="display: grid; gap: 20px;">
+                    <div
+                        style="display: flex; align-items: center; gap: 15px; padding: 15px; background: white; border-radius: 10px; border: 2px solid #e5e7eb;">
+                        <span style="font-size: 24px;">📄</span>
+                        <div>
+                            <p style="font-weight: bold; color: #333;">Original High School Certificate</p>
+                            <p style="font-size: 14px; color: #666;">Must be certified by the educational administration
+                            </p>
+                        </div>
+                    </div>
+                    <div
+                        style="display: flex; align-items: center; gap: 15px; padding: 15px; background: white; border-radius: 10px; border: 2px solid #e5e7eb;">
+                        <span style="font-size: 24px;">🆔</span>
+                        <div>
+                            <p style="font-weight: bold; color: #333;">National ID Card</p>
+                            <p style="font-size: 14px; color: #666;">Clear photocopy of a valid ID</p>
+                        </div>
+                    </div>
+                    <div
+                        style="display: flex; align-items: center; gap: 15px; padding: 15px; background: white; border-radius: 10px; border: 2px solid #e5e7eb;">
+                        <span style="font-size: 24px;">👶</span>
+                        <div>
+                            <p style="font-weight: bold; color: #333;">Birth Certificate</p>
+                            <p style="font-size: 14px; color: #666;">Computerized or official copy</p>
+                        </div>
+                    </div>
+                    <div
+                        style="display: flex; align-items: center; gap: 15px; padding: 15px; background: white; border-radius: 10px; border: 2px solid #e5e7eb;">
+                        <span style="font-size: 24px;">📸</span>
+                        <div>
+                            <p style="font-weight: bold; color: #333;">6 Recent Photos</p>
+                            <p style="font-size: 14px; color: #666;">Color, 4×6 cm, white background</p>
+                        </div>
+                    </div>
+                    <div
+                        style="display: flex; align-items: center; gap: 15px; padding: 15px; background: white; border-radius: 10px; border: 2px solid #e5e7eb;">
+                        <span style="font-size: 24px;">🎖️</span>
+                        <div>
+                            <p style="font-weight: bold; color: #333;">Form 2 Military (Males Only)</p>
+                            <p style="font-size: 14px; color: #666;">Issued by Recruitment Office</p>
+                        </div>
+                    </div>
+                    <div
+                        style="display: flex; align-items: center; gap: 15px; padding: 15px; background: white; border-radius: 10px; border: 2px solid #e5e7eb;">
+                        <span style="font-size: 24px;">📃</span>
+                        <div>
+                            <p style="font-weight: bold; color: #333;">Printed Application Form</p>
+                            <p style="font-size: 14px; color: #666;">Printed from the online coordination portal</p>
+                        </div>
+                    </div>
+                    <div
+                        style="display: flex; align-items: center; gap: 15px; padding: 15px; background: white; border-radius: 10px; border: 2px solid #e5e7eb;">
+                        <span style="font-size: 24px;">💰</span>
+                        <div>
+                            <p style="font-weight: bold; color: #333;">Fee Payment Receipt</p>
+                            <p style="font-size: 14px; color: #666;">From the designated bank</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div
+                style="background: #fef3c7; border: 2px solid #fbbf24; border-radius: 12px; padding: 20px; margin: 20px 0;">
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <span style="font-size: 32px;">⚠️</span>
+                    <div>
+                        <p style="font-weight: bold; color: #92400e; margin-bottom: 5px;">Important Notice:</p>
+                        <p style="color: #92400e; font-size: 14px;">All original documents must be presented for
+                            verification. Incomplete submissions will not be accepted.</p>
+                    </div>
+                </div>
+            </div>
+
+            <p style="text-align: center; font-size: 18px; margin: 30px 0; font-weight: bold; color: #333;">Have you
+                gathered all the required documents?</p>
+
+            <div class="document-options">
+                <div class="doc-option" onclick="submitDocuments(true)">
+                    <div style="font-size: 48px; margin-bottom: 15px;">✅</div>
+                    <h3>Yes, all documents ready</h3>
+                    <p style="color: #666; font-size: 14px; margin-top: 10px;">Verification and registration will
+                        proceed immediately</p>
+                </div>
+
+                <div class="doc-option" onclick="submitDocuments(false)">
+                    <div style="font-size: 48px; margin-bottom: 15px;">⚠️</div>
+                    <h3>No, documents incomplete</h3>
+                    <p style="color: #666; font-size: 14px; margin-top: 10px;">You’ll receive a notification of missing
+                        items</p>
+                </div>
+            </div>
+        </div>
+        <!-- Incomplete -->
+        <div id="incompleteScreen" class="card hidden">
+            <div style="text-align: center;">
+                <div style="font-size: 80px;">⚠️</div>
+                <h2 style="font-size: 28px; color: #f59e0b; margin: 20px 0;">Documents Incomplete</h2>
+
+                <div class="alert alert-error">
+                    <span style="font-size: 24px;">❌</span>
+                    <p>Please review your documents and resubmit</p>
+                </div>
+                <button onclick="showDocuments()" class="btn btn-primary">Resubmit</button>
+            </div>
+        </div>
+        <!-- Verified -->0
+        <div id="verifiedScreen" class="card hidden">
+            <div style="text-align: center;">
+                <div style="font-size: 100px;">🎊</div>
+                <h2 style="font-size: 32px; color: #10b981; margin: 20px 0;">Registration Successful!</h2>
+
+                <div
+                    style="background: linear-gradient(135deg, #d1fae5, #a7f3d0); padding: 40px; border-radius: 20px; margin: 30px 0;">
+                    <h3 style="font-size: 28px; color: #065f46;" id="verifiedCollegeName"></h3>
+                </div>
+
+                <button onclick="logout()" class="btn btn-primary">Back to Home</button>
+            </div>
+        </div>
+        <!-- Loading -->
+        <div id="loadingScreen" class="card hidden">
+            <div class="spinner"></div>
+            <p style="text-align: center; margin-top: 20px;">Processing...</p>
+        </div>
+    </div>
+    <script src="soft.js"></script>
+</body>
+</html>
