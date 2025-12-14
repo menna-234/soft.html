@@ -1,1 +1,1 @@
-live server:https://github.com/menna-234/soft.html.git
+live server:https://menna-234.github.io/soft.html/
